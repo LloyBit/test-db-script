@@ -1,8 +1,8 @@
 from faker import Faker
-from database import get_session
+from script.database import database
 from psycopg2.extras import execute_values
 import numpy as np
-from .base import Command
+from script.commands.base import Command
 
 class GenerateDataCommand(Command):
     def __init__(self, fn_pool=10, ln_pool=1000, mn_pool=10, date_pool=10):
@@ -19,7 +19,7 @@ class GenerateDataCommand(Command):
         print("Данные успешно сгенерированы")
 
     def generate_fake_users(self):
-        with get_session() as session:
+        with database.get_session() as session:
             conn = session.connection().connection
             cursor = conn.cursor()
             self._insert_special_test_users(cursor)

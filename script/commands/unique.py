@@ -1,14 +1,14 @@
-from database import get_session
+from script.database import database
 from sqlalchemy import text
 from datetime import date
-from .base import Command
+from script.commands.base import Command
 from tabulate import tabulate
 
 class UniqueCommand(Command):
     PAGE_SIZE = 20  # количество записей на страницу
 
     def run(self):
-        with get_session() as session:
+        with database.get_session() as session:
             result = session.execute(text("""
                 SELECT DISTINCT full_name, date_of_birth, gender
                 FROM users

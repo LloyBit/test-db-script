@@ -1,11 +1,11 @@
-from database import get_session
-from .base import Command
-from utils import timer
+from script.database import database
+from script.commands.base import Command
+from script.utils import timer
 
 class OptimizeQueryCommand(Command):
     @timer
     def run(self):
-        with get_session() as session:
+        with database.get_session() as session:
             conn = session.connection().connection
             cursor = conn.cursor()
             # Создадим составной индекс

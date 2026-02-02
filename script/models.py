@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field
-from datetime import date, datetime
+from datetime import date
 from enum import Enum
 
 class Gender(str, Enum):

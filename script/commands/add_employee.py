@@ -1,7 +1,7 @@
 from datetime import datetime
-from models import Users, Gender
-from database import get_session
-from .base import Command
+from script.models import Users, Gender
+from script.database import database
+from script.commands.base import Command
 
 # Добавляем сотрудника в таблицу users
 class AddEmployeeCommand(Command):
@@ -12,7 +12,7 @@ class AddEmployeeCommand(Command):
 
         user = Users(full_name=full_name, date_of_birth=date_of_birth, gender=gender)
 
-        with get_session() as session:
+        with database.get_session() as session:
             user.save(session)
             print(f"Сотрудник: {user.full_name}, возраст: {user.age()} лет добавлен")
         
