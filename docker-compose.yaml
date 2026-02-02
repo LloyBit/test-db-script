@@ -1,0 +1,41 @@
+services:
+  db-script:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    user: "root"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - postgres
+    networks:
+      - script-network
+    stdin_open: true
+    tty: true
+    command: ["uv", "run", "python", "-m", "script.main"]
+    healthcheck:
+      test: ["CMD", "uv", "run", "script/main.py", "1"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  postgres:
+    image: postgres:17
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - script-network
+
+volumes:
+  postgres_data:
+
+networks:
+  script-network:
+    driver: bridge
